@@ -1,3 +1,5 @@
+import {setBackdropClassName, setButtonClassName, setContainerClassName, setViewClassName} from './ui';
+
 type UserIdentity = {id: string; verificationHash: string};
 
 const DEFAULT_API_BASE_URL = 'https://api.wavecx.com';
@@ -5,18 +7,41 @@ const DEFAULT_API_BASE_URL = 'https://api.wavecx.com';
 let apiBaseUrl = DEFAULT_API_BASE_URL;
 let organizationCode: string | undefined;
 let userIdentity: UserIdentity | undefined;
+let currentTriggerPoint: string | undefined;
+let contentTypes = ['featurette'];
+let platform: 'desktop' | 'mobile' = 'desktop';
 
 export const initialize = (options: {
   organizationCode: string;
   userIdentity?: UserIdentity;
   apiBaseUrl?: string;
+  platform?: 'desktop' | 'mobile';
+  contentTypes?: ('featurette' | 'form' | 'page' | 'demo')[];
+  backdropClassName?: string;
+  containerClassName?: string;
+  viewClassName?: string;
+  buttonClassName?: string;
 }) => {
   organizationCode = options.organizationCode;
   userIdentity = options.userIdentity;
   apiBaseUrl = options.apiBaseUrl ?? DEFAULT_API_BASE_URL;
+  platform = options.platform ?? 'desktop';
+  contentTypes = options.contentTypes ?? ['featurette'];
+  if (options.backdropClassName) {
+    setBackdropClassName(options.backdropClassName);
+  }
+  if (options.containerClassName) {
+    setContainerClassName(options.containerClassName);
+  }
+  if (options.viewClassName) {
+    setViewClassName(options.viewClassName);
+  }
+  if (options.buttonClassName) {
+    setButtonClassName(options.buttonClassName);
+  }
 }
 
-export const setUser = (identity: UserIdentity) => userIdentity = identity;
+export const setUser = (identity: UserIdentity | undefined) => userIdentity = identity;
 
 export const setOrganization = (newOrganizationCode: string) => organizationCode = newOrganizationCode;
 
@@ -32,18 +57,25 @@ export type Content = {
   };
 };
 
+export const setTriggerPoint = (triggerPoint?: string, onNewContent?: (content: Content[]) => void) => {
+  currentTriggerPoint = triggerPoint;
+  if (currentTriggerPoint) {
+    tryCheckForContent({triggerPoint: currentTriggerPoint}).then((result) => {
+      if (result.ok) {
+        onNewContent?.(result.content);
+      }
+    });
+  }
+}
+
 export type TryCheckForContentResult =
   | {ok: true; content: Content[]}
   | {ok: false; error: 'user-not-identified' | 'identity-verification-failed' | 'network-error' | 'unknown'};
 
 export const tryCheckForContent = async ({
   triggerPoint,
-  platform,
-  contentTypes = ['featurette'],
 }: {
   triggerPoint: string;
-  platform: 'desktop' | 'mobile';
-  contentTypes?: ('featurette' | 'form' | 'page' | 'demo')[];
 }): Promise<TryCheckForContentResult> => {
   if (!userIdentity) {
     return {ok: false, error: 'user-not-identified'};

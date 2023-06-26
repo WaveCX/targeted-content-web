@@ -1,6 +1,6 @@
 {
   "name": "@wavecx/targeted-content",
-  "version": "0.0.4",
+  "version": "1.0.0",
   "description": "WaveCX targeted content library",
   "homepage": "https://github.com/WaveCX/targeted-content-web#readme",
   "type": "module",
