@@ -1,0 +1,44 @@
+{
+  "name": "@wavecx/targeted-content",
+  "version": "0.0.4",
+  "description": "WaveCX targeted content library",
+  "homepage": "https://github.com/WaveCX/targeted-content-web#readme",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WaveCX/targeted-content-web.git"
+  },
+  "bugs": {
+    "url": "https://github.com/WaveCX/targeted-content-web/issues"
+  },
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "rollup": "rollup -c",
+    "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
+    "prettier": "prettier --write ./src"
+  },
+  "browserslist": [
+    "defaults"
+  ],
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^24.1.0",
+    "@rollup/plugin-node-resolve": "^15.0.2",
+    "@rollup/plugin-typescript": "^11.1.0",
+    "@typescript-eslint/eslint-plugin": "^5.59.1",
+    "@typescript-eslint/parser": "^5.59.1",
+    "eslint": "^8.39.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-react": "^7.32.2",
+    "prettier": "^2.8.8",
+    "rollup": "^3.20.7",
+    "rollup-plugin-dts": "^5.3.0",
+    "rollup-plugin-postcss": "^4.0.2",
+    "tslib": "^2.5.0",
+    "typescript": "^5.0.4"
+  }
+}
